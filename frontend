@@ -1,0 +1,58 @@
+import React, { useState } from 'react';
+
+function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const register = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+      alert(data.message || 'Kayıt başarılı');
+    } catch (error) {
+      alert('Kayıt sırasında hata: ' + error.message);
+    }
+  };
+
+  const login = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+      alert(data.message || 'Giriş başarılı');
+    } catch (error) {
+      alert('Giriş sırasında hata: ' + error.message);
+    }
+  };
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Giriş / Kayıt</h2>
+      <input
+        placeholder="Kullanıcı Adı"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      /><br /><br />
+      <input
+        type="password"
+        placeholder="Şifre"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      /><br /><br />
+      <button onClick={register}>Kayıt Ol</button>
+      <button onClick={login} style={{ marginLeft: 10 }}>Giriş Yap</button>
+    </div>
+  );
+}
+
+export default App;
+
